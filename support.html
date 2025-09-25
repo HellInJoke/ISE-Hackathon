@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ISE Platform - Support Center</title>
+    <style>
+        /* Global styles */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #fff;
+            color: #333;
+            line-height: 1.5;
+        }
+
+        /* Header */
+        header {
+            background-color: #fff;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #6a4c93;
+        }
+
+        .logo img {
+            width: 30px;
+            height: 30px;
+            margin-right: 10px;
+            background-color: #6a4c93;
+            border-radius: 8px;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            margin: 0;
+            padding: 0;
+        }
+
+        nav li {
+            margin: 0 15px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        nav a.active {
+            background-color: #e7f1ff;
+            color: #007bff;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+
+        .logout {
+            color: #dc3545;
+            cursor: pointer;
+        }
+
+        /* Main content */
+        .main {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 20px;
+            text-align: center;
+        }
+
+        .title h1 {
+            font-size: 2.5em;
+            margin: 10px 0;
+        }
+
+        .sos {
+            color: #ff69b4;
+        }
+
+        .title p {
+            font-size: 1.1em;
+            color: #666;
+            margin: 0 0 30px;
+        }
+
+        .crisis-banner {
+            background: #ffebee;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 30px;
+            text-align: left;
+            color: #e57373;
+        }
+
+        .crisis-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .crisis-desc {
+            font-size: 0.9em;
+            margin-bottom: 10px;
+        }
+
+        .crisis-contact {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .hotline-button {
+            background: #f44336;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            cursor: pointer;
+        }
+
+        .live-chat {
+            font-size: 0.9em;
+            color: #f44336;
+        }
+
+        .tabs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        .tab {
+            background: #f8f9fa;
+            color: #666;
+            padding: 8px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9em;
+        }
+
+        .tab.active {
+            background: #e7f1ff;
+            color: #007bff;
+        }
+
+        .faq-section h2 {
+            font-size: 1.5em;
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        .faq-item {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            display: block; /* Changed to block to handle tags below */
+        }
+
+        .faq-question {
+            font-size: 1em;
+            font-weight: bold;
+            margin-bottom: 5px; /* Space for tags */
+        }
+
+        .faq-tags {
+            display: flex;
+            gap: 10px;
+            margin-top: 5px; /* Space between question and tags */
+        }
+
+        .faq-tag {
+            background: #007bff; /* Blue color as per request */
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8em;
+        }
+
+        .faq-arrow {
+            font-size: 1em;
+            color: #666;
+            float: right; /* Keep arrow on the right */
+        }
+
+        .faq-answer {
+            display: none;
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 10px;
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        /* Placeholder for other sections */
+        .section {
+            display: none;
+            text-align: left;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+            font-size: 0.9em;
+            border-top: 1px solid #eee;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <div>🎧</div> ISE Platform <br> Interactive Skills Enhancer
+        </div>
+        <nav>
+            <ul>
+                <li><a href="home.html">🏠 Home</a></li>
+                <li><a href="login.html">👤 Profile</a></li>
+                <li><a href="dashboard.html">📊 Dashboard</a></li>
+                <li><a href="vr-learning.html">🕶️ VR Learning</a></li>
+                <li><a href="games-rewards.html">🎮 Games & Rewards</a></li>
+                <li><a href="accessibility.html">♿ Accessibility</a></li>
+                <li><a href="#" class="active">❓ Support</a></li>
+                <li><a class="logout" onclick="logout()">↩️ Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="main">
+        <div class="title">
+            <h1>Support Center <span class="sos">SOS</span></h1>
+            <p>We're here to help you and your child succeed with ISE Platform. Find answers, get support, and connect with our community.</p>
+        </div>
+
+        <div class="crisis-banner">
+            <div class="crisis-title">24/7 Crisis Support</div>
+            <div class="crisis-desc">If your child is experiencing a crisis or emergency, call our hotline immediately.</div>
+            <div class="crisis-contact">
+                <button class="hotline-button">📞 1-800-ISE-HELP</button>
+                <span class="live-chat">Live Chat Available</span>
+            </div>
+        </div>
+
+        <div class="tabs">
+            <div class="tab active" data-section="faq">❓ FAQ</div>
+            <div class="tab" data-section="contact">💬 Contact Us</div>
+            <div class="tab" data-section="resources">📄 Resources</div>
+            <div class="tab" data-section="community">👥 Community</div>
+        </div>
+
+        <div id="faq-section" class="section faq-section">
+            <h2>Frequently Asked Questions</h2>
+            <div class="faq-item" onclick="toggleAnswer(this)">
+                <div class="faq-question">How do I set up VR equipment for my child?</div>
+                <span class="faq-arrow">▶️</span>
+                <div class="faq-tags">
+                    <span class="faq-tag">Setup</span>
+                </div>
+            </div>
+            <div class="faq-answer">
+                Follow our step-by-step guide in the resources section or contact support for assistance.
+            </div>
+
+            <div class="faq-item" onclick="toggleAnswer(this)">
+                <div class="faq-question">Is the platform safe for children with autism?</div>
+                <span class="faq-arrow">▶️</span>
+                <div class="faq-tags">
+                    <span class="faq-tag">Safety</span>
+                </div>
+            </div>
+            <div class="faq-answer">
+                Yes, our platform is designed with safety in mind, including features to reduce sensory overload.
+            </div>
+
+            <div class="faq-item" onclick="toggleAnswer(this)">
+                <div class="faq-question">How long should VR sessions be for my child?</div>
+                <span class="faq-arrow">▶️</span>
+                <div class="faq-tags">
+                    <span class="faq-tag">Usage</span>
+                </div>
+            </div>
+            <div class="faq-answer">
+                We recommend starting with 10-15 minute sessions and gradually increasing based on your child's comfort.
+            </div>
+
+            <div class="faq-item" onclick="toggleAnswer(this)">
+                <div class="faq-question">Can I track my child's progress?</div>
+                <span class="faq-arrow">▶️</span>
+                <div class="faq-tags">
+                    <span class="faq-tag">Progress</span>
+                </div>
+            </div>
+            <div class="faq-answer">
+                Yes, use the dashboard to view detailed progress reports and analytics.
+            </div>
+
+            <div class="faq-item" onclick="toggleAnswer(this)">
+                <div class="faq-question">What if my child has a meltdown during VR?</div>
+                <span class="faq-arrow">▶️</span>
+                <div class="faq-tags">
+                    <span class="faq-tag">Crisis Support</span>
+                </div>
+            </div>
+            <div class="faq-answer">
+                Pause the session immediately and use our crisis support hotline for guidance.
+            </div>
+
+            <div class="faq-item" onclick="toggleAnswer(this)">
+                <div class="faq-question">Is there support for non-verbal children?</div>
+                <span class="faq-arrow">▶️</span>
+                <div class="faq-tags">
+                    <span class="faq-tag">Communication</span>
+                </div>
+            </div>
+            <div class="faq-answer">
+                Yes, our platform includes visual cues and alternative communication methods.
+            </div>
+        </div>
+
+        <div id="contact-section" class="section" style="display: none;">
+            <h2>Contact Us</h2>
+            <p>Reach out to our support team for personalized assistance.</p>
+            <!-- Add form or contact details here -->
+        </div>
+
+        <div id="resources-section" class="section" style="display: none;">
+            <h2>Resources</h2>
+            <p>Download guides, tutorials, and more.</p>
+            <!-- Add resource links here -->
+        </div>
+
+        <div id="community-section" class="section" style="display: none;">
+            <h2>Community</h2>
+            <p>Join forums and connect with other families.</p>
+            <!-- Add community links here -->
+        </div>
+    </div>
+
+    <footer>
+        <p>Interactive Skills Enhancer (ISE) - Empowering children with ASD and ID through VR learning</p>
+        <p>© 2025 ISE Platform. Designed with accessibility and inclusion at heart. Made with ❤️ for special needs families.</p>
+    </footer>
+
+    <script>
+        const tabs = document.querySelectorAll('.tab');
+        const sections = document.querySelectorAll('.section');
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                tabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                const section = tab.getAttribute('data-section');
+                sections.forEach(s => s.style.display = 'none');
+                document.getElementById(`${section}-section`).style.display = 'block';
+            });
+        });
+
+        function toggleAnswer(item) {
+            const answer = item.nextElementSibling;
+            const arrow = item.querySelector('.faq-arrow');
+            if (answer.style.display === 'block') {
+                answer.style.display = 'none';
+                arrow.textContent = '▶️';
+            } else {
+                answer.style.display = 'block';
+                arrow.textContent = '▼';
+            }
+        }
+
+        function logout() {
+            alert('Logging out...');
+            window.location.href = 'home.html';
+        }
+    </script>
+</body>
+</html>

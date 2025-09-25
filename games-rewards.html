@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ISE Platform - Games & Rewards</title>
+    <style>
+        /* Global styles */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #fff;
+            color: #333;
+            line-height: 1.5;
+        }
+
+        /* Header */
+        header {
+            background-color: #fff;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #6a4c93;
+        }
+
+        .logo img {
+            width: 30px;
+            height: 30px;
+            margin-right: 10px;
+            background-color: #6a4c93;
+            border-radius: 8px;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            margin: 0;
+            padding: 0;
+        }
+
+        nav li {
+            margin: 0 15px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        nav a.active {
+            background-color: #e7f1ff;
+            color: #007bff;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+
+        .logout {
+            color: #dc3545;
+            cursor: pointer;
+        }
+
+        /* Main content */
+        .main {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 20px;
+            text-align: center;
+        }
+
+        .title h1 {
+            font-size: 2.5em;
+            margin: 10px 0;
+        }
+
+        .title p {
+            font-size: 1.1em;
+            color: #666;
+            margin: 0 0 30px;
+        }
+
+        .progress-banner {
+            background: linear-gradient(to right, #007bff, #6f42c1);
+            color: white;
+            border-radius: 20px;
+            padding: 20px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.8em;
+            font-weight: bold;
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+        }
+
+        .progress-to-level {
+            font-size: 0.8em;
+            margin-top: 10px;
+            text-align: right;
+        }
+
+        .progress-bar {
+            background: rgba(255,255,255,0.3);
+            border-radius: 10px;
+            height: 10px;
+            margin-top: 5px;
+        }
+
+        .progress-fill {
+            background: white;
+            height: 100%;
+            border-radius: 10px;
+            width: 8%; /* 2450/30000 ≈ 8% */
+        }
+
+        .tabs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        .tab {
+            background: #f8f9fa;
+            color: #666;
+            padding: 8px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9em;
+        }
+
+        .tab.active {
+            background: #e7f1ff;
+            color: #007bff;
+        }
+
+        .achievements {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .achievement-card {
+            background: #d4edda;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: left;
+            position: relative;
+        }
+
+        .achievement-icon {
+            font-size: 1.5em;
+            background: white;
+            border-radius: 50%;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        .rarity {
+            background: #f8f9fa;
+            color: #666;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            margin-left: 10px;
+        }
+
+        .rarity-uncommon { background: #d4edda; color: #28a745; }
+        .rarity-rare { background: #cce5ff; color: #007bff; }
+        .rarity-epic { background: #e2d9f3; color: #6f42c1; }
+        .rarity-legendary { background: #fff3cd; color: #ffc107; }
+
+        .xp {
+            font-size: 0.8em;
+            color: #28a745;
+            margin-left: 10px;
+        }
+
+        .achievement-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin: 0 0 5px;
+        }
+
+        .achievement-desc {
+            font-size: 0.9em;
+            color: #666;
+            margin: 0 0 10px;
+        }
+
+        .unlocked {
+            font-size: 0.8em;
+            color: #28a745;
+        }
+
+        .locked-message {
+            font-size: 0.8em;
+            color: #ffc107;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+            font-size: 0.9em;
+            border-top: 1px solid #eee;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <div>🎧</div> ISE Platform <br> Interactive Skills Enhancer
+        </div>
+        <nav>
+            <ul>
+                <li><a href="home.html">🏠 Home</a></li>
+                <li><a href="login.html">👤 Profile</a></li>
+                <li><a href="dashboard.html">📊 Dashboard</a></li>
+                <li><a href="vr-learning.html">🕶️ VR Learning</a></li>
+                <li><a href="#" class="active">🎮 Games & Rewards</a></li>
+                <li><a href="accessibility.html">♿ Accessibility</a></li>
+                <li><a href="support.html">❓ Support</a></li>
+                <li><a class="logout" onclick="logout()">↩️ Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="main">
+        <div class="title">
+            <h1>Games & Rewards 🎮</h1>
+            <p>Track your progress, earn achievements, and unlock amazing rewards!</p>
+        </div>
+
+        <div class="progress-banner">
+            <div class="stat">
+                <div class="stat-value">0</div>
+                <div class="stat-label">Total Points</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value">Level 0</div>
+                <div class="stat-label">Explorer</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value">0 days</div>
+                <div class="stat-label">Learning Streak</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value">NIL</div>
+                <div class="stat-label">Global Rank</div>
+            </div>
+        </div>
+
+        <div class="progress-to-level">
+            Progress to Level 1
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: 8.17%;"></div> <!-- 0/30000 ≈ 8.17% -->
+            </div>
+            0/30000 XP
+        </div>
+
+        <div class="tabs">
+            <div class="tab active" data-section="achievements">🏆 Achievements</div>
+            <div class="tab" data-section="rewards">🎁 Rewards Store</div>
+            <div class="tab" data-section="leaderboard">👑 Leaderboard</div>
+        </div>
+
+        <div class="achievements" id="achievements-section">
+            <div class="achievement-card">
+                <div class="achievement-icon">⭐</div>
+                <span class="rarity rarity-common">Common</span>
+                <span class="xp">+50 XP</span>
+                <h2 class="achievement-title">First Steps</h2>
+                <p class="achievement-desc">Complete your first VR module</p>
+                <span class="unlocked">🔒 Keep learning to unlock this achievement!</span>
+            </div>
+
+            <div class="achievement-card">
+                <div class="achievement-icon">👥</div>
+                <span class="rarity rarity-uncommon">Uncommon</span>
+                <span class="xp">+150 XP</span>
+                <h2 class="achievement-title">Social Butterfly</h2>
+                <p class="achievement-desc">Complete 5 social skills modules</p>
+                <span class="unlocked">🔒 Keep learning to unlock this achievement!</span>
+            </div>
+
+            <div class="achievement-card">
+                <div class="achievement-icon">🔥</div>
+                <span class="rarity rarity-rare">Rare</span>
+                <span class="xp">+200 XP</span>
+                <h2 class="achievement-title">Week Warrior</h2>
+                <p class="achievement-desc">Maintain a 7-day learning streak</p>
+                <span class="unlocked">🔒 Keep learning to unlock this achievement!</span>
+            </div>
+
+            <div class="achievement-card">
+                <div class="achievement-icon">🎯</div>
+                <span class="rarity rarity-epic">Epic</span>
+                <h2 class="achievement-title">Perfect Score</h2>
+                <p class="achievement-desc">Score 100% on any module</p>
+                <span class="locked-message">🔒 Keep learning to unlock this achievement!</span>
+            </div>
+
+            <div class="achievement-card">
+                <div class="achievement-icon">👑</div>
+                <span class="rarity rarity-legendary">Legendary</span>
+                <h2 class="achievement-title">Life Skills Master</h2>
+                <p class="achievement-desc">Complete all daily living modules</p>
+                <span class="locked-message">🔒 Keep learning to unlock this achievement!</span>
+            </div>
+        </div>
+
+        <div id="rewards-section" style="display: none;">
+            <p>Oops! Try harder!</p>
+        </div>
+
+        <div id="leaderboard-section" style="display: none;">
+            <p>See where you stand!</p>
+        </div>
+    </div>
+
+    <footer>
+        <p>Interactive Skills Enhancer (ISE) - Empowering children with ASD and ID through VR learning</p>
+        <p>© 2025 ISE Platform. Designed with accessibility and inclusion at heart. Made with ❤️ for special needs families.</p>
+    </footer>
+
+    <script>
+        const tabs = document.querySelectorAll('.tab');
+        const sections = {
+            achievements: document.getElementById('achievements-section'),
+            rewards: document.getElementById('rewards-section'),
+            leaderboard: document.getElementById('leaderboard-section')
+        };
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                tabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                const section = tab.getAttribute('data-section');
+                Object.values(sections).forEach(s => s.style.display = 'none');
+                sections[section].style.display = 'grid'; // For achievements, use grid; adjust for others if needed
+            });
+        });
+
+        function logout() {
+            alert('Logging out...');
+            window.location.href = 'home.html';
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ISE Platform - Accessibility</title>
+    <style>
+        /* Global styles */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #fff;
+            color: #333;
+            line-height: 1.5;
+        }
+
+        /* Header */
+        header {
+            background-color: #fff;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #6a4c93;
+        }
+
+        .logo img {
+            width: 30px;
+            height: 30px;
+            margin-right: 10px;
+            background-color: #6a4c93;
+            border-radius: 8px;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            margin: 0;
+            padding: 0;
+        }
+
+        nav li {
+            margin: 0 15px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        nav a.active {
+            background-color: #e7f1ff;
+            color: #007bff;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+
+        .logout {
+            color: #dc3545;
+            cursor: pointer;
+        }
+
+        /* Main content */
+        .main {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 20px;
+            text-align: center;
+        }
+
+        .title h1 {
+            font-size: 2.5em;
+            margin: 10px 0;
+        }
+
+        .title p {
+            font-size: 1.1em;
+            color: #666;
+            margin: 0 0 30px;
+        }
+
+        .categories {
+            display: flex;
+            justify-content: space-around;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .category-card {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 20px;
+            width: 25%;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .category-card.active {
+            background: #e7f1ff;
+        }
+
+        .category-icon {
+            font-size: 2em;
+            margin-bottom: 10px;
+            background: linear-gradient(to right, #007bff, #6f42c1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .category-title {
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+
+        .section {
+            display: none;
+            text-align: left;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        .section h2 {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+        }
+
+        .toggle-item {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .toggle-label {
+            font-size: 1em;
+            font-weight: bold;
+        }
+
+        .toggle-desc {
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 40px;
+            height: 20px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 20px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 2px;
+            bottom: 2px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: #007bff;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(20px);
+        }
+
+        .text-size {
+            display: flex;
+            align-items: center;
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 10px;
+        }
+
+        .text-size-label {
+            font-size: 1em;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .text-size-controls {
+            display: flex;
+            align-items: center;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            padding: 5px;
+        }
+
+        .text-size-button {
+            background: none;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+
+        .text-size-value {
+            margin: 0 10px;
+            font-size: 1em;
+        }
+
+        .sample-text {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+
+        .save-settings {
+            background: linear-gradient(to right, #007bff, #6f42c1);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 30px;
+            font-size: 1em;
+            cursor: pointer;
+        }
+
+        .reset-defaults {
+            background: #f8f9fa;
+            color: #666;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 30px;
+            font-size: 1em;
+            cursor: pointer;
+        }
+
+        .commitment {
+            background: #e7f1ff;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            text-align: left;
+        }
+
+        .commitment h2 {
+            font-size: 1.5em;
+            margin: 0 0 10px;
+        }
+
+        .commitment p {
+            font-size: 1em;
+            color: #666;
+            margin: 0 0 10px;
+        }
+
+        .commitment ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .commitment li {
+            font-size: 1em;
+            color: #007bff;
+            margin-bottom: 5px;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+            font-size: 0.9em;
+            border-top: 1px solid #eee;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <div>🎧</div> ISE Platform <br> Interactive Skills Enhancer
+        </div>
+        <nav>
+            <ul>
+                <li><a href="home.html">🏠 Home</a></li>
+                <li><a href="login.html">👤 Profile</a></li>
+                <li><a href="dashboard.html">📊 Dashboard</a></li>
+                <li><a href="vr-learning.html">🕶️ VR Learning</a></li>
+                <li><a href="games-rewards.html">🎮 Games & Rewards</a></li>
+                <li><a href="#" class="active">♿ Accessibility</a></li>
+                <li><a href="support.html">❓ Support</a></li>
+                <li><a class="logout" onclick="logout()">↩️ Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="main">
+        <div class="title">
+            <h1>Accessibility Tools ♿</h1>
+            <p>Customize your learning experience with accessibility features designed for children with ASD and ID.</p>
+        </div>
+
+        <div class="categories">
+            <div class="category-card active" data-category="visual">
+                <div class="category-icon">👁️</div>
+                <div class="category-title">Visual</div>
+            </div>
+            <div class="category-card" data-category="audio">
+                <div class="category-icon">👂</div>
+                <div class="category-title">Audio</div>
+            </div>
+            <div class="category-card" data-category="motor">
+                <div class="category-icon">🖱️</div>
+                <div class="category-title">Motor</div>
+            </div>
+            <div class="category-card" data-category="sensory">
+                <div class="category-icon">⚡</div>
+                <div class="category-title">Sensory</div>
+            </div>
+        </div>
+
+        <div class="section active" id="visual-section">
+            <h2>Visual Accessibility</h2>
+            <div class="toggle-item">
+                <div>
+                    <div class="toggle-label">High Contrast Mode</div>
+                    <div class="toggle-desc">Increase contrast for better visibility</div>
+                </div>
+                <label class="toggle-switch">
+                    <input type="checkbox" onchange="toggleHighContrast(this)">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <div class="toggle-item">
+                <div>
+                    <div class="toggle-label">Dark Mode</div>
+                    <div class="toggle-desc">Reduce eye strain with dark backgrounds</div>
+                </div>
+                <label class="toggle-switch">
+                    <input type="checkbox" onchange="toggleDarkMode(this)">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <div class="text-size">
+                <div class="text-size-label">Text Size</div>
+                <div class="text-size-controls">
+                    <button class="text-size-button" onclick="changeTextSize(-2)">-</button>
+                    <span class="text-size-value" id="text-size-value">16px</span>
+                    <button class="text-size-button" onclick="changeTextSize(2)">+</button>
+                </div>
+                <div class="toggle-desc">Adjust text size for better readability</div>
+            </div>
+            <p id="sample-text" class="sample-text">Sample text at your selected size. This helps you see how text will appear in the application.</p>
+            <div class="toggle-item">
+                <div>
+                    <div class="toggle-label">Reduce Motion</div>
+                    <div class="toggle-desc">Minimize animations and transitions</div>
+                </div>
+                <label class="toggle-switch">
+                    <input type="checkbox" onchange="toggleReduceMotion(this)">
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+
+        <div class="section" id="audio-section">
+            <h2>Audio Accessibility</h2>
+            <div class="toggle-item">
+                <div>
+                    <div class="toggle-label">Text-to-Speech</div>
+                    <div class="toggle-desc">Enable voice reading of text content</div>
+                </div>
+                <label class="toggle-switch">
+                    <input type="checkbox" onchange="toggleTTS(this)">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <div class="toggle-item">
+                <div>
+                    <div class="toggle-label">Closed Captions</div>
+                    <div class="toggle-desc">Display subtitles for audio and video</div>
+                </div>
+                <label class="toggle-switch">
+                    <input type="checkbox" onchange="toggleCaptions(this)">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <div class="toggle-item">
+                <div>
+                    <div class="toggle-label">Volume Boost</div>
+                    <div class="toggle-desc">Increase audio volume for better hearing</div>
+                </div>
+                <label class="toggle-switch">
+                    <input type="checkbox" onchange="toggleVolumeBoost(this)">
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+
+        <div class="section" id="motor-section">
+            <h2>Motor Accessibility</h2>
+            <div class="toggle-item">
+                <div>
+                    <div class="toggle-label">Keyboard Navigation</div>
+                    <div class="toggle-desc">Enable full keyboard control</div>
+                </div>
+                <label class="toggle-switch">
+                    <input type="checkbox" onchange="toggleKeyboardNav(this)">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <div class="toggle-item">
+                <div>
+                    <div class="toggle-label">Voice Control</div>
+                    <div class="toggle-desc">Use voice commands for navigation</div>
+                </div>
+                <label class="toggle-switch">
+                    <input type="checkbox" onchange="toggleVoiceControl(this)">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <div class="toggle-item">
+                <div>
+                    <div class="toggle-label">Large Click Areas</div>
+                    <div class="toggle-desc">Increase button and link sizes</div>
+                </div>
+                <label class="toggle-switch">
+                    <input type="checkbox" onchange="toggleLargeClick(this)">
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+
+        <div class="section" id="sensory-section">
+            <h2>Sensory Accessibility</h2>
+            <div class="toggle-item">
+                <div>
+                    <div class="toggle-label">Calm Mode</div>
+                    <div class="toggle-desc">Reduce visual and audio stimuli</div>
+                </div>
+                <label class="toggle-switch">
+                    <input type="checkbox" onchange="toggleCalmMode(this)">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <div class="toggle-item">
+                <div>
+                    <div class="toggle-label">No Flash</div>
+                    <div class="toggle-desc">Disable flashing lights</div>
+                </div>
+                <label class="toggle-switch">
+                    <input type="checkbox" onchange="toggleNoFlash(this)">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <div class="toggle-item">
+                <div>
+                    <div class="toggle-label">Simplified Layout</div>
+                    <div class="toggle-desc">Remove unnecessary elements</div>
+                </div>
+                <label class="toggle-switch">
+                    <input type="checkbox" onchange="toggleSimplifiedLayout(this)">
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+
+        <div class="action-buttons">
+            <button class="save-settings" onclick="saveSettings()">💾 Save Settings</button>
+            <button class="reset-defaults" onclick="resetDefaults()">↺ Reset to Defaults</button>
+        </div>
+
+        <div class="commitment">
+            <h2>Accessibility Commitment</h2>
+            <p>ISE Platform is designed to be accessible to all children, including those with autism spectrum disorder and intellectual disabilities. Our accessibility features are based on WCAG guidelines and input from special needs families.</p>
+            <ul>
+                <li>Screen reader compatible</li>
+                <li>Keyboard navigation support</li>
+                <li>Clear visual indicators</li>
+                <li>Consistent navigation patterns</li>
+            </ul>
+        </div>
+    </div>
+
+    <footer>
+        <p>Interactive Skills Enhancer (ISE) - Empowering children with ASD and ID through VR learning</p>
+        <p>© 2025 ISE Platform. Designed with accessibility and inclusion at heart. Made with ❤️ for special needs families.</p>
+    </footer>
+
+    <script>
+        let textSize = 16;
+
+        const categories = document.querySelectorAll('.category-card');
+        const sections = document.querySelectorAll('.section');
+
+        categories.forEach(card => {
+            card.addEventListener('click', () => {
+                categories.forEach(c => c.classList.remove('active'));
+                card.classList.add('active');
+                const category = card.getAttribute('data-category');
+                sections.forEach(s => s.classList.remove('active'));
+                document.getElementById(`${category}-section`).classList.add('active');
+            });
+        });
+
+        function toggleHighContrast(checkbox) {
+            alert(checkbox.checked ? 'High Contrast Mode enabled' : 'High Contrast Mode disabled');
+        }
+
+        function toggleDarkMode(checkbox) {
+            alert(checkbox.checked ? 'Dark Mode enabled' : 'Dark Mode disabled');
+        }
+
+        function toggleReduceMotion(checkbox) {
+            alert(checkbox.checked ? 'Reduce Motion enabled' : 'Reduce Motion disabled');
+        }
+
+        function toggleTTS(checkbox) {
+            alert(checkbox.checked ? 'Text-to-Speech enabled' : 'Text-to-Speech disabled');
+        }
+
+        function toggleCaptions(checkbox) {
+            alert(checkbox.checked ? 'Closed Captions enabled' : 'Closed Captions disabled');
+        }
+
+        function toggleVolumeBoost(checkbox) {
+            alert(checkbox.checked ? 'Volume Boost enabled' : 'Volume Boost disabled');
+        }
+
+        function toggleKeyboardNav(checkbox) {
+            alert(checkbox.checked ? 'Keyboard Navigation enabled' : 'Keyboard Navigation disabled');
+        }
+
+        function toggleVoiceControl(checkbox) {
+            alert(checkbox.checked ? 'Voice Control enabled' : 'Voice Control disabled');
+        }
+
+        function toggleLargeClick(checkbox) {
+            alert(checkbox.checked ? 'Large Click Areas enabled' : 'Large Click Areas disabled');
+        }
+
+        function toggleCalmMode(checkbox) {
+            alert(checkbox.checked ? 'Calm Mode enabled' : 'Calm Mode disabled');
+        }
+
+        function toggleNoFlash(checkbox) {
+            alert(checkbox.checked ? 'No Flash enabled' : 'No Flash disabled');
+        }
+
+        function toggleSimplifiedLayout(checkbox) {
+            alert(checkbox.checked ? 'Simplified Layout enabled' : 'Simplified Layout disabled');
+        }
+
+        function changeTextSize(change) {
+            textSize += change;
+            if (textSize < 12) textSize = 12;
+            if (textSize > 24) textSize = 24;
+            document.getElementById('text-size-value').textContent = `${textSize}px`;
+            document.getElementById('sample-text').style.fontSize = `${textSize}px`;
+        }
+
+        function saveSettings() {
+            alert('Settings saved!');
+        }
+
+        function resetDefaults() {
+            alert('Settings reset to defaults!');
+            // Reset toggles and text size
+            textSize = 16;
+            document.getElementById('text-size-value').textContent = '16px';
+            document.getElementById('sample-text').style.fontSize = '16px';
+            document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => checkbox.checked = false);
+        }
+
+        function logout() {
+            alert('Logging out...');
+            window.location.href = 'home.html';
+        }
+    </script>
+</body>
+</html>

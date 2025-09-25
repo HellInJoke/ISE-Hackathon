@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ISE Platform - VR Learning Modules</title>
+    <style>
+        /* Global styles */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #fff;
+            color: #333;
+            line-height: 1.5;
+        }
+
+        /* Header */
+        header {
+            background-color: #fff;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #6a4c93;
+        }
+
+        .logo img {
+            width: 30px;
+            height: 30px;
+            margin-right: 10px;
+            background-color: #6a4c93;
+            border-radius: 8px;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            margin: 0;
+            padding: 0;
+        }
+
+        nav li {
+            margin: 0 15px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        nav a.active {
+            background-color: #e7f1ff;
+            color: #007bff;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+
+        .logout {
+            color: #dc3545;
+            cursor: pointer;
+        }
+
+        /* Main content */
+        .main {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 20px;
+            text-align: center;
+        }
+
+        .title h1 {
+            font-size: 2.5em;
+            margin: 10px 0;
+        }
+
+        .title p {
+            font-size: 1.1em;
+            color: #666;
+            margin: 0 0 30px;
+        }
+
+        .tabs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        .tab {
+            background: #f8f9fa;
+            color: #666;
+            padding: 8px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9em;
+        }
+
+        .tab.active {
+            background: #e7f1ff;
+            color: #007bff;
+        }
+
+        .modules {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .module-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            text-align: left;
+            position: relative;
+            overflow: hidden; /* Ensure badge stays within card */
+        }
+
+        .status-icon {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 1.5em;
+        }
+
+        .status-green { color: #28a745; }
+        .status-gray { color: #6c757d; }
+
+        .module-image {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .time-badge {
+            background: #000;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            position: absolute;
+            bottom: 20px;
+            right: 20px; /* Moved to the right */
+            transform: none; /* Removed centering transform */
+        }
+
+        .module-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin: 0 0 5px;
+        }
+
+        .rating {
+            color: #ffc107;
+            font-size: 0.9em;
+        }
+
+        .description {
+            font-size: 0.9em;
+            color: #666;
+            margin: 5px 0 10px;
+        }
+
+        .level-category {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .level {
+            background: #d4edda;
+            color: #28a745;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8em;
+        }
+
+        .level-intermediate { background: #fff3cd; color: #ffc107; }
+        .level-advanced { background: #f8d7da; color: #dc3545; }
+
+        .category {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .action-button {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 20px;
+            font-size: 1em;
+            cursor: pointer;
+        }
+
+        .completed {
+            background: #d4edda;
+            color: #28a745;
+        }
+
+        .start-module {
+            background: linear-gradient(to right, #007bff, #6f42c1);
+            color: white;
+        }
+
+        .locked {
+            background: #f8f9fa;
+            color: #6c757d;
+        }
+
+        /* Hide class for filtering */
+        .hidden {
+            display: none;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+            font-size: 0.9em;
+            border-top: 1px solid #eee;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <div>🎧</div> ISE Platform <br> Interactive Skills Enhancer
+        </div>
+        <nav>
+            <ul>
+                <li><a href="home.html">🏠 Home</a></li>
+                <li><a href="login.html">👤 Profile</a></li>
+                <li><a href="dashboard.html">📊 Dashboard</a></li>
+                <li><a href="#" class="active">🕶️ VR Learning</a></li>
+                <li><a href="games-rewards.html">🎮 Games & Rewards</a></li>
+                <li><a href="accessibility.html">♿ Accessibility</a></li>
+                <li><a href="support.html">❓ Support</a></li>
+                <li><a class="logout" onclick="logout()">↩️ Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="main">
+        <div class="title">
+            <h1>VR Learning Modules</h1>
+            <p>Immersive virtual reality experiences designed to help children develop essential life skills in a safe, engaging environment.</p>
+        </div>
+
+        <div class="tabs">
+            <div class="tab active" data-category="all">🌐 All Modules</div>
+            <div class="tab" data-category="social">👥 Social Skills</div>
+            <div class="tab" data-category="living">🏠 Daily Living</div>
+            <div class="tab" data-category="academic">📚 Academic</div>
+        </div>
+
+        <div class="modules">
+            <div class="module-card" data-category="social">
+                <span class="status-icon status-gray">🔒</span>
+                <img src="https://fastly.picsum.photos/id/378/5000/3333.jpg?hmac=Jh9hcCIe9-6cNIvJnO5d33CuAR-3RKeOMRx4ki5nKt8" alt="Greeting Friends" class="module-image">
+                <span class="time-badge">⏱️ 15 min</span>
+                <h2 class="module-title">Greeting Friends <span class="rating">⭐ </span></h2>
+                <p class="description">Learn how to greet friends and make eye contact in a safe virtual environment.</p>
+                <div class="level-category">
+                    <span class="level">Beginner</span>
+                    <span class="category">👥 Social</span>
+                </div>
+                <button class="action-button completed" onclick="handleCompleted()">▶️ Start Module</button>
+            </div>
+
+            <div class="module-card" data-category="social">
+                <span class="status-icon status-gray">🔒</span>
+                <img src="https://fastly.picsum.photos/id/373/4896/3264.jpg?hmac=vTrYn2mUEwsfJnkaoiBskuIlDUaM3Xim-TFA_SK6lAg" alt="Sharing Toys" class="module-image">
+                <span class="time-badge">⏱️ 20 min</span>
+                <h2 class="module-title">Sharing Toys <span class="rating">⭐</span></h2>
+                <p class="description">Practice sharing and taking turns with virtual friends.</p>
+                <div class="level-category">
+                    <span class="level">Beginner</span>
+                    <span class="category">👥 Social</span>
+                </div>
+                <button class="action-button completed" onclick="handleCompleted()">▶️ Start Module</button>
+            </div>
+
+            <div class="module-card" data-category="social">
+                <span class="status-icon status-gray">🔒</span>
+                <img src="https://fastly.picsum.photos/id/349/3264/2176.jpg?hmac=WNt0QoaZyFRaiL5yitDV4LOXzdHV5Z9tHUxbc6KdBSY" alt="Reading Emotions" class="module-image">
+                <span class="time-badge">⏱️ 25 min</span>
+                <h2 class="module-title">Reading Emotions <span class="rating">⭐ </span></h2>
+                <p class="description">Identify different facial expressions and emotions in interactive scenarios.</p>
+                <div class="level-category">
+                    <span class="level level-intermediate">Intermediate</span>
+                    <span class="category">👥 Social</span>
+                </div>
+                <button class="action-button start-module" onclick="handleStartModule()">▶️ Start Module</button>
+            </div>
+
+            <div class="module-card" data-category="living">
+                <span class="status-icon status-gray">🔒</span>
+                <img src="https://fastly.picsum.photos/id/311/1000/563.jpg?hmac=M6WX06qTw-1eQj4z12Zh-NPeJnll-6a_yx9CbNnRPHs" alt="Making Your Bed" class="module-image">
+                <span class="time-badge">⏱️ 12 min</span>
+                <h2 class="module-title">Making Your Bed <span class="rating">⭐</span></h2>
+                <p class="description">Step-by-step guidance for making your bed independently.</p>
+                <div class="level-category">
+                    <span class="level">Beginner</span>
+                    <span class="category">🏠 Living</span>
+                </div>
+                <button class="action-button completed" onclick="handleCompleted()">▶️ Start Module</button>
+            </div>
+
+            <div class="module-card" data-category="living">
+                <span class="status-icon status-gray">🔒</span>
+                <img src="https://fastly.picsum.photos/id/225/1500/979.jpg?hmac=jvGoek9ng_Y0GaBbzxN0KJhHaiPtk1VfRcukK8R8FxQ" alt="Eating Habits" class="module-image">
+                <span class="time-badge">⏱️ 10 min</span>
+                <h2 class="module-title">Eating Habits <span class="rating">⭐</span></h2>
+                <p class="description">Learn proper eating etiquettes with virtual guidance.</p>
+                <div class="level-category">
+                    <span class="level">Beginner</span>
+                    <span class="category">🏠 Living</span>
+                </div>
+                <button class="action-button completed" onclick="handleCompleted()">▶️ Start Module</button>
+            </div>
+
+            <div class="module-card" data-category="living">
+                <span class="status-icon status-gray">🔒</span>
+                <img src="https://fastly.picsum.photos/id/23/3887/4899.jpg?hmac=2fo1Y0AgEkeL2juaEBqKPbnEKm_5Mp0M2nuaVERE6eE" alt="Kitchen Safety" class="module-image">
+                <span class="time-badge">⏱️ 30 min</span>
+                <h2 class="module-title">Kitchen Safety <span class="rating">⭐ </span></h2>
+                <p class="description">Understand kitchen safety rules and proper tool handling.</p>
+                <div class="level-category">
+                    <span class="level level-advanced">Advanced</span>
+                    <span class="category">🏠 Living</span>
+                </div>
+                <button class="action-button locked" onclick="handleLocked()">🔒 Locked</button>
+            </div>
+
+            <div class="module-card" data-category="academic">
+                <span class="status-icon status-gray">🔒</span>
+                <img src="https://fastly.picsum.photos/id/29/4000/2670.jpg?hmac=rCbRAl24FzrSzwlR5tL-Aqzyu5tX_PA95VJtnUXegGU" alt="Counting Adventures" class="module-image">
+                <span class="time-badge">⏱️ 18 min</span>
+                <h2 class="module-title">Counting Adventures <span class="rating">⭐</span></h2>
+                <p class="description">Interactive counting games with virtual objects and characters.</p>
+                <div class="level-category">
+                    <span class="level">Beginner</span>
+                    <span class="category">📚 Academic</span>
+                </div>
+                <button class="action-button start-module" onclick="handleStartModule()">▶️ Start Module</button>
+            </div>
+
+            <div class="module-card" data-category="academic">
+                <span class="status-icon status-gray">🔒</span>
+                <img src="https://fastly.picsum.photos/id/24/4855/1803.jpg?hmac=ICVhP1pUXDLXaTkgwDJinSUS59UWalMxf4SOIWb9Ui4" alt="Letter Recognition" class="module-image">
+                <span class="time-badge">⏱️ 22 min</span>
+                <h2 class="module-title">Letter Recognition <span class="rating">⭐</span></h2>
+                <p class="description">Recognize and trace letters in an immersive 3D environment.</p>
+                <div class="level-category">
+                    <span class="level">Beginner</span>
+                    <span class="category">📚 Academic</span>
+                </div>
+                <button class="action-button start-module" onclick="handleStartModule()">▶️ Start Module</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>Interactive Skills Enhancer (ISE) - Empowering children with ASD and ID through VR learning</p>
+        <p>© 2025 ISE Platform. Designed with accessibility and inclusion at heart. Made with ❤️ for special needs families.</p>
+    </footer>
+
+    <script>
+        const tabs = document.querySelectorAll('.tab');
+        const modules = document.querySelectorAll('.module-card');
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                tabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                const category = tab.getAttribute('data-category');
+                modules.forEach(module => {
+                    if (category === 'all' || module.getAttribute('data-category') === category) {
+                        module.classList.remove('hidden');
+                    } else {
+                        module.classList.add('hidden');
+                    }
+                });
+            });
+        });
+
+        function handleCompleted() {
+            alert('This module is already completed!');
+        }
+
+        function handleStartModule() {
+            alert('Starting the module...');
+        }
+
+        function handleLocked() {
+            alert('This module is locked. Complete previous modules to unlock.');
+        }
+
+        function logout() {
+            alert('Logging out...');
+            window.location.href = 'home.html';
+        }
+    </script>
+</body>
+</html>
